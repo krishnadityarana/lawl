@@ -2,99 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>A Question Only You Can Answer ❤️</title>
+  <title>Important Question 🤨</title>
 
   <style>
     body {
       margin: 0;
       padding: 0;
       text-align: center;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #ffe6eb, #fff);
+      font-family: Arial, sans-serif;
+      background: #ffe6eb;
       overflow: hidden;
     }
 
     h1 {
       margin-top: 120px;
-      font-size: 2.8em;
-      color: #d63384;
-      animation: fadeIn 2s ease;
+      font-size: 2.2em;
+      color: #333;
     }
 
-    p {
-      font-size: 1.2em;
-      color: #555;
-      animation: fadeIn 3s ease;
-    }
-
-    .btn {
-      padding: 15px 30px;
+    button {
+      padding: 15px 25px;
       font-size: 18px;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: 0.3s;
+      position: absolute;
+      transition: transform 0.2s;
     }
 
     #yes {
-      background: #28a745;
+      background: green;
       color: white;
+      position: static;
       margin-top: 40px;
-      position: relative;
-    }
-
-    #yes:hover {
-      transform: scale(1.1);
     }
 
     #no {
-      background: #dc3545;
+      background: red;
       color: white;
-      position: absolute;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px);}
-      to { opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 
 <body>
 
-<h1> Are you gay ? 🫰🥳</h1>
-<p> </p>
+<h1>Am I shady… or are you just confidently wrong? 🤨</h1>
 
-<button id="yes" class="btn">YESSSS ❤️</button>
-<button id="no" class="btn">NO 😈</button>
+<button id="yes">Not shady 😌</button>
+<button id="no">Shady 😈</button>
 
 <script>
   const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
 
-  document.addEventListener("mousemove", function(e) {
+  let scale = 1;
+
+  function moveFar() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    // shrink every time 😈
+    scale *= 0.9;
+    noBtn.style.transform = `scale(${scale})`;
+  }
+
+  // Desktop hover
+  noBtn.addEventListener("mouseover", moveFar);
+
+  // Mobile touch (before click)
+  noBtn.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    moveFar();
+  });
+
+  // Finger close → run away
+  document.addEventListener("touchmove", function(e) {
+    const touch = e.touches[0];
     const rect = noBtn.getBoundingClientRect();
 
-    const distance = Math.hypot(
-      e.clientX - (rect.left + rect.width / 2),
-      e.clientY - (rect.top + rect.height / 2)
+    const dist = Math.hypot(
+      touch.clientX - (rect.left + rect.width / 2),
+      touch.clientY - (rect.top + rect.height / 2)
     );
 
-    if (distance < 100) {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
-
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+    if (dist < 120) {
+      moveFar();
     }
   });
 
-  document.getElementById("yes").onclick = function() {
+  // Random movement
+  setInterval(moveFar, 1000);
+
+  // If somehow clicked → escape
+  noBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    moveFar();
+  });
+
+  // YES button result
+  yesBtn.addEventListener("click", function() {
     document.body.innerHTML = `
-      <h1 style="margin-top: 150px; color:#28a745;">
-        i knew it from the start tch tch tch ...
-      </h1>
+      <h1 style="margin-top:150px;">See? Even you couldn’t prove it 😌</h1>
+      <p style="font-size:1.2em;">Case closed. Not shady ✔️</p>
     `;
-  };
+  });
 </script>
 
 </body>
