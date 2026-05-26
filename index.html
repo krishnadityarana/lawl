@@ -1,207 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Happy Birthday Janki 🎂</title>
+  height:2px;
+  background:white;
+  border-radius:50%;
+  animation: twinkle 3s infinite;
+}
 
-<style>
-    body {
-        margin: 0;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #ffb6d9, #c9a7ff);
-        text-align: center;
-    }
+@keyframes twinkle {
+  0%,100% {opacity:0.2;}
+  50% {opacity:1;}
+}
 
-    h1 {
-        color: white;
-        margin-top: 20px;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    }
+.content {
+  z-index:2;
+  padding:20px;
+  animation:fadeIn 3s;
+}
 
-    #game {
-        position: relative;
-        width: 100vw;
-        height: 80vh;
-        overflow: hidden;
-    }
+h1 {
+  font-size:3rem;
+  color:#ffb6ff;
+}
 
-    #player {
-        position: absolute;
-        bottom: 20px;
-        left: 45%;
-        font-size: 50px;
-        transition: 0.05s;
-    }
+p {
+  font-size:1.2rem;
+  line-height:1.8;
+}
 
-    .item {
-        position: absolute;
-        top: -50px;
-        font-size: 40px;
-        animation: fall linear forwards;
-    }
-
-    @keyframes fall {
-        to {
-            transform: translateY(90vh);
-        }
-    }
-
-    #score {
-        font-size: 24px;
-        color: white;
-        margin-top: 10px;
-    }
-
-    #finalMessage {
-        display: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        color: white;
-        background: rgba(0,0,0,0.4);
-        padding: 30px;
-        border-radius: 20px;
-        font-size: 22px;
-        line-height: 1.6;
-        animation: fadeIn 2s;
-    }
-
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-
-    .confetti {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background: white;
-        animation: confettiFall 4s linear infinite;
-    }
-
-    @keyframes confettiFall {
-        from {
-            transform: translateY(-100vh) rotate(0deg);
-        }
-        to {
-            transform: translateY(100vh) rotate(360deg);
-        }
-    }
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
 </style>
 </head>
-
 <body>
 
-<h1>🎂 Janki Birthday Quest 🎂</h1>
-<div id="score">Score: 0</div>
+<div class="stars"></div>
 
-<div id="game">
-    <div id="player">🧸</div>
+<div class="content">
+  <h1>Happy Birthday Janki ✨</h1>
+  <p>
+    Out of billions of people in this universe,
+    somehow you became incredibly important
+    to someone I care about deeply.
+    <br><br>
+    And honestly, from everything I’ve heard,
+    you seem like a genuinely beautiful soul.
+    <br><br>
+    May this year bring you peace,
+    happiness, laughter, and unforgettable memories 🌌💖
+  </p>
 </div>
 
-<div id="finalMessage">
-    <h2>Happy Birthday Janki ✨</h2>
-
-    <p>
-        Even though we don’t know each other that well,
-        I’ve heard enough about you to know you’re genuinely someone special.
-        <br><br>
-        Anyone who matters this much to someone I care about has to be amazing.
-        <br><br>
-        I hope this year brings you happiness, peace, great memories,
-        and people who value you the way you deserve.
-        <br><br>
-        Stay wonderful and keep being everyone’s favorite human 🎂💖
-    </p>
-</div>
+<audio autoplay loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-    const player = document.getElementById("player");
-    const game = document.getElementById("game");
-    const scoreDisplay = document.getElementById("score");
-    const finalMessage = document.getElementById("finalMessage");
-
-    let score = 0;
-    let playerX = window.innerWidth / 2;
-
-    document.addEventListener("mousemove", (e) => {
-        playerX = e.clientX;
-        player.style.left = playerX + "px";
-    });
-
-    document.addEventListener("touchmove", (e) => {
-        playerX = e.touches[0].clientX;
-        player.style.left = playerX + "px";
-    });
-
-    function createItem() {
-        const item = document.createElement("div");
-        item.classList.add("item");
-
-        const emojis = ["🎂", "💖", "✨", "🍰"];
-        item.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-
-        item.style.left = Math.random() * window.innerWidth + "px";
-        item.style.animationDuration = (2 + Math.random() * 3) + "s";
-
-        game.appendChild(item);
-
-        const fall = setInterval(() => {
-            const itemRect = item.getBoundingClientRect();
-            const playerRect = player.getBoundingClientRect();
-
-            if (
-                itemRect.bottom >= playerRect.top &&
-                itemRect.left < playerRect.right &&
-                itemRect.right > playerRect.left
-            ) {
-                score++;
-                scoreDisplay.innerText = "Score: " + score;
-                item.remove();
-                clearInterval(fall);
-
-                if (score >= 15) {
-                    endGame();
-                }
-            }
-
-            if (itemRect.top > window.innerHeight) {
-                item.remove();
-                clearInterval(fall);
-            }
-
-        }, 50);
-    }
-
-    const gameLoop = setInterval(createItem, 700);
-
-    function endGame() {
-        clearInterval(gameLoop);
-
-        document.querySelectorAll(".item").forEach(el => el.remove());
-
-        finalMessage.style.display = "block";
-
-        for(let i=0; i<100; i++) {
-            let confetti = document.createElement("div");
-            confetti.classList.add("confetti");
-
-            confetti.style.left = Math.random() * window.innerWidth + "px";
-            confetti.style.top = Math.random() * window.innerHeight + "px";
-
-            confetti.style.background =
-                `hsl(${Math.random()*360},100%,70%)`;
-
-            confetti.style.animationDuration =
-                (2 + Math.random()*3) + "s";
-
-            document.body.appendChild(confetti);
-        }
-    }
+for(let i=0;i<250;i++){
+  let star=document.createElement('div');
+  star.classList.add('star');
+  star.style.left=Math.random()*100+'vw';
+  star.style.top=Math.random()*100+'vh';
+  star.style.animationDuration=(Math.random()*5+2)+'s';
+  document.querySelector('.stars').appendChild(star);
+}
 </script>
 
 </body>
