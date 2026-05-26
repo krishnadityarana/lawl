@@ -1,72 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Janki Quiz</title>
+
+<title>Happy Birthday Janki ✨</title>
+
 <style>
-body {
-  margin:0;
-  font-family:Arial;
-  background:linear-gradient(135deg,#fbc2eb,#a6c1ee);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  text-align:center;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.quiz-box {
-  background:white;
-  width:90%;
-  max-width:450px;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+body{
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+    background:black;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
 }
 
-button {
-  display:block;
-  width:100%;
-  margin-top:15px;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  background:#8b5cf6;
-  color:white;
-  font-size:16px;
+#stars{
+    position:absolute;
+    width:100%;
+    height:100%;
 }
 
-button:hover {
-  transform:scale(1.03);
+.star{
+    position:absolute;
+    background:white;
+    border-radius:50%;
+    animation:twinkle linear infinite;
 }
+
+@keyframes twinkle{
+    0%{opacity:0.2;}
+    50%{opacity:1;}
+    100%{opacity:0.2;}
+}
+
+.content{
+    position:relative;
+    z-index:10;
+    width:85%;
+    max-width:600px;
+    animation:fadeIn 3s ease;
+}
+
+h1{
+    font-size:42px;
+    margin-bottom:25px;
+    color:#ffb3ff;
+    text-shadow:0 0 20px #ff66ff;
+}
+
+p{
+    font-size:20px;
+    line-height:1.8;
+    color:#f2f2f2;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+#musicBtn{
+    position:absolute;
+    bottom:30px;
+    padding:14px 24px;
+    border:none;
+    border-radius:30px;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    font-size:16px;
+    backdrop-filter:blur(10px);
+}
+
 </style>
 </head>
+
 <body>
 
-<div class="quiz-box">
-  <h2 id="question">What powers Janki the most?</h2>
+<div id="stars"></div>
 
-  <button onclick="next()">Coffee ☕</button>
-  <button onclick="next()">Chaos ✨</button>
-  <button onclick="next()">Good vibes 💖</button>
-  <button onclick="next()">Main character energy 🌸</button>
+<div class="content">
+
+    <h1>Happy Birthday Janki ✨</h1>
+
+    <p>
+        Out of billions of people in this universe,
+        somehow you became incredibly important
+        to someone I care about deeply.
+        <br><br>
+
+        And honestly, from everything I’ve heard,
+        you seem like a genuinely beautiful soul.
+        <br><br>
+
+        May this year bring you peace,
+        happiness, laughter,
+        and unforgettable memories 🌌💖
+    </p>
+
 </div>
 
-<audio autoplay loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" type="audio/mpeg">
+<button id="musicBtn">
+    🎵 Tap For Music
+</button>
+
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8d9c7f6fd.mp3?filename=beautiful-relaxing-music-14437.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-let questions=[
-'What is Janki most likely to survive on?',
-'What is her hidden superpower?',
-'How iconic is she today?',
-'Final Result 🎂✨'
-];
 
-let i=0;
+const starsContainer = document.getElementById("stars");
 
-function next(){
-  i++;
+for(let i=0; i<250; i++){
+
+    let star = document.createElement("div");
+
+    star.classList.add("star");
+
+    let size = Math.random()*3;
+
+    star.style.width = size + "px";
+    star.style.height = size + "px";
+
+    star.style.left = Math.random()*window.innerWidth + "px";
+    star.style.top = Math.random()*window.innerHeight + "px";
+
+    star.style.animationDuration =
+        (Math.random()*5 + 2) + "s";
+
+    starsContainer.appendChild(star);
+}
+
+const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("music");
+
+musicBtn.addEventListener("click", () => {
+
+    music.play();
+
+    musicBtn.innerHTML = "✨ Enjoy The Universe ✨";
+});
+
+</script>
+
+</body>
 </html>
