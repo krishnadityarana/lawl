@@ -1,119 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Important Question 🤨</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday Janki 🎂</title>
 
-  <style>
+<style>
     body {
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      background: #ffe6eb;
-      overflow: hidden;
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ffb6d9, #c9a7ff);
+        text-align: center;
     }
 
     h1 {
-      margin-top: 120px;
-      font-size: 2.2em;
-      color: #333;
+        color: white;
+        margin-top: 20px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
     }
 
-    button {
-      padding: 15px 25px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      position: absolute;
-      transition: transform 0.2s;
+    #game {
+        position: relative;
+        width: 100vw;
+        height: 80vh;
+        overflow: hidden;
     }
 
-    #yes {
-      background: green;
-      color: white;
-      position: static;
-      margin-top: 40px;
+    #player {
+        position: absolute;
+        bottom: 20px;
+        left: 45%;
+        font-size: 50px;
+        transition: 0.05s;
     }
 
-    #no {
-      background: red;
-      color: white;
+    .item {
+        position: absolute;
+        top: -50px;
+        font-size: 40px;
+        animation: fall linear forwards;
     }
-  </style>
+
+    @keyframes fall {
+        to {
+            transform: translateY(90vh);
+        }
+    }
+
+    #score {
+        font-size: 24px;
+        color: white;
+        margin-top: 10px;
+    }
+
+    #finalMessage {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        color: white;
+        background: rgba(0,0,0,0.4);
+        padding: 30px;
+        border-radius: 20px;
+        font-size: 22px;
+        line-height: 1.6;
+        animation: fadeIn 2s;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: white;
+        animation: confettiFall 4s linear infinite;
+    }
+
+    @keyframes confettiFall {
+        from {
+            transform: translateY(-100vh) rotate(0deg);
+        }
+        to {
+            transform: translateY(100vh) rotate(360deg);
+        }
+    }
+</style>
 </head>
 
 <body>
 
-<h1>Am I shady… or are you just confidently wrong? 🤨</h1>
+<h1>🎂 Janki Birthday Quest 🎂</h1>
+<div id="score">Score: 0</div>
 
-<button id="yes">Not shady 😌</button>
-<button id="no">Shady 😈</button>
+<div id="game">
+    <div id="player">🧸</div>
+</div>
+
+<div id="finalMessage">
+    <h2>Happy Birthday Janki ✨</h2>
+
+    <p>
+        Even though we don’t know each other that well,
+        I’ve heard enough about you to know you’re genuinely someone special.
+        <br><br>
+        Anyone who matters this much to someone I care about has to be amazing.
+        <br><br>
+        I hope this year brings you happiness, peace, great memories,
+        and people who value you the way you deserve.
+        <br><br>
+        Stay wonderful and keep being everyone’s favorite human 🎂💖
+    </p>
+</div>
 
 <script>
-  const noBtn = document.getElementById("no");
-  const yesBtn = document.getElementById("yes");
+    const player = document.getElementById("player");
+    const game = document.getElementById("game");
+    const scoreDisplay = document.getElementById("score");
+    const finalMessage = document.getElementById("finalMessage");
 
-  let scale = 1;
+    let score = 0;
+    let playerX = window.innerWidth / 2;
 
-  function moveFar() {
-    const padding = 20;
-    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+    document.addEventListener("mousemove", (e) => {
+        playerX = e.clientX;
+        player.style.left = playerX + "px";
+    });
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    document.addEventListener("touchmove", (e) => {
+        playerX = e.touches[0].clientX;
+        player.style.left = playerX + "px";
+    });
 
-    noBtn.style.position = "absolute";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    function createItem() {
+        const item = document.createElement("div");
+        item.classList.add("item");
 
-    // shrink every time 😈
-    scale *= 0.9;
-    noBtn.style.transform = `scale(${scale})`;
-  }
+        const emojis = ["🎂", "💖", "✨", "🍰"];
+        item.innerText = emojis[Math.floor(Math.random() * emojis.length)];
 
-  // Desktop hover
-  noBtn.addEventListener("mouseover", moveFar);
+        item.style.left = Math.random() * window.innerWidth + "px";
+        item.style.animationDuration = (2 + Math.random() * 3) + "s";
 
-  // Mobile touch (before click)
-  noBtn.addEventListener("touchstart", function(e) {
-    e.preventDefault();
-    moveFar();
-  });
+        game.appendChild(item);
 
-  // Finger close → run away
-  document.addEventListener("touchmove", function(e) {
-    const touch = e.touches[0];
-    const rect = noBtn.getBoundingClientRect();
+        const fall = setInterval(() => {
+            const itemRect = item.getBoundingClientRect();
+            const playerRect = player.getBoundingClientRect();
 
-    const dist = Math.hypot(
-      touch.clientX - (rect.left + rect.width / 2),
-      touch.clientY - (rect.top + rect.height / 2)
-    );
+            if (
+                itemRect.bottom >= playerRect.top &&
+                itemRect.left < playerRect.right &&
+                itemRect.right > playerRect.left
+            ) {
+                score++;
+                scoreDisplay.innerText = "Score: " + score;
+                item.remove();
+                clearInterval(fall);
 
-    if (dist < 120) {
-      moveFar();
+                if (score >= 15) {
+                    endGame();
+                }
+            }
+
+            if (itemRect.top > window.innerHeight) {
+                item.remove();
+                clearInterval(fall);
+            }
+
+        }, 50);
     }
-  });
 
-  // Random movement
-  setInterval(moveFar, 1000);
+    const gameLoop = setInterval(createItem, 700);
 
-  // If somehow clicked → escape
-  noBtn.addEventListener("click", function(e) {
-    e.preventDefault();
-    moveFar();
-  });
+    function endGame() {
+        clearInterval(gameLoop);
 
-  // YES button result
-  yesBtn.addEventListener("click", function() {
-    document.body.innerHTML = `
-      <h1 style="margin-top:150px;">See? Even you couldn’t prove it 😌</h1>
-      <p style="font-size:1.2em;">Case closed. Not shady ✔️</p>
-    `;
-  });
+        document.querySelectorAll(".item").forEach(el => el.remove());
+
+        finalMessage.style.display = "block";
+
+        for(let i=0; i<100; i++) {
+            let confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+
+            confetti.style.left = Math.random() * window.innerWidth + "px";
+            confetti.style.top = Math.random() * window.innerHeight + "px";
+
+            confetti.style.background =
+                `hsl(${Math.random()*360},100%,70%)`;
+
+            confetti.style.animationDuration =
+                (2 + Math.random()*3) + "s";
+
+            document.body.appendChild(confetti);
+        }
+    }
 </script>
 
 </body>
